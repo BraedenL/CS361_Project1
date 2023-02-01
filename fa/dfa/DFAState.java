@@ -1,5 +1,6 @@
 package fa.dfa;
 
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,44 +9,57 @@ import fa.State;
 
 public class DFAState extends State
 {
-    boolean isStartState, isEndState;
+    boolean isStartState, isFinalState;
     //Second value of the hashmap is a character, however I think it may need to be a list or array
     //in order to be able to transition on multiple values. (q0 -- 0,1 --> q1)
     HashMap<String, ArrayList<Character>> nextStateMap;
     int transitionCharacterCounter = 0;
     ArrayList<Character> transitionList;
 
-    private DFAState(String name)
+    public DFAState(String name)
     {
         super(name);
         isStartState = false;
-        isEndState = false;
+        isFinalState = false;
         transitionList = new ArrayList<Character>();
         nextStateMap = new HashMap<String, ArrayList<Character>>();
         
-        
     }
     
-    private void toggleStartState()
+    public void toggleStartState()
     {
         isStartState = !isStartState;
     }
-    private void toggleEndState()
+    //For usage when checking all 
+    public boolean checkStartStatus()
     {
-        isEndState = !isEndState;
+        return isStartState;
     }
-    private void addTransition(String nextStateName, Character transitionChar)
+    public void toggleFinalState()
     {
-        //Need to find a way to add a character to a list or array inside of the .put function for hashmap
+        isFinalState = !isFinalState;
+    }
+    public void addTransition(String nextStateName, Character transitionChar)
+    {
+        //Check if the transition already exists inside of the state, prevent duplicates from being added to a next state
+        for(Character i: transitionList)
+        {
+            if(i.equals(transitionChar))
+            {
+                //Console output just for checking if state already has a transition for that character
+                System.out.println("There is already a transition for that input on this state");
+                return;
+            }
+        }
         transitionList.add(transitionChar);
         nextStateMap.put(nextStateName, transitionList);
         //I think this will work, might need to go through list and make ensure the transitionChar isn't 
-        //already in the list...
+        //already in the list... --ADDED--
     }
 
-    //not sure if its really necessary but we could add a remove transition method?
-    //feel free to remove this 
-    private void removeTransition(String nextStateName, Character transitionChar)
+    //not sure if its really necessary but we could add a remove transition method? feel free to remove this 
+    //Edited to remove state input in case we need to use it
+    private void removeTransition(Character transitionChar)
     {
         for (Character i : transitionList)
         {
@@ -63,5 +77,6 @@ public class DFAState extends State
         return null;
         
     }
+
 
 }
