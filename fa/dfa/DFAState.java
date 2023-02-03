@@ -70,6 +70,30 @@ public class DFAState extends State
         }
     }
 
+    //returns the next State given a transition char
+    public String findStateOnTransition(Character transitionChar)
+    {
+        String stateName = null;
+        ArrayList<Character> transitionArr;
+
+        //for each nextstate in the nextstate map
+        for(String S_name: nextStateMap.keySet())
+        {
+            //get the transition characters used to get to that next state
+            transitionArr = nextStateMap.get(S_name);
+            for (Character c : transitionArr) {
+                if (c == transitionChar)
+                {
+                    //if one of those transition characters is the one were looking for, return the state found
+                    stateName = S_name;
+                    return stateName;
+                }
+            }
+        }
+
+        return stateName;
+    }
+
     //probably need a toString to use in conjunction with other toStrings for the DFA table at the end
     public String toString()
     {

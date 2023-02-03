@@ -101,7 +101,8 @@ public class DFA implements DFAInterface{
 
     @Override
     public boolean accepts(String s) {
-        DFAState currentState;
+        DFAState currentState = null;
+        String nextStateName = null;
         //Parse through and get the starting state from the dfa
         for(DFAState dfaState : States)
         {
@@ -110,12 +111,45 @@ public class DFA implements DFAInterface{
                 currentState = dfaState;
             }
         }
-        //Move through the characters of the string
+
+        if(currentState == null)
+        {
+            System.out.println("accepts() failed to find start state");
+            return false;
+        }
+
+        /*
+         * Move through the characters of the string
+         * For clarification, since the alphabet holds all "letters" that 
+         * can be transitioned upon, the "letters" variable will be each 
+         * character in the string, 
+         */
         for(int i = 0; i < s.length(); i++)
         {
-            char current = s.charAt(i);
-            //Parse through the 
+            nextStateName = null; //reset it
+            char letter = s.charAt(i);//Parse through the proposed string
+            nextStateName = currentState.findStateOnTransition(letter); //look for it
+            if(nextStateName == null) //no state was found on that transition letter
+            {
+                return false; //immediately fail it when theres no state for a letter, self loops should not fall into this case.
+            }
+
+            for (DFAState dfaState : States) //look through the states for one with provided name
+            {
+                if(dfaState.getName().equals(nextStateName))
+                {
+                    currentState = dfaState; //if next state found, change current to it
+                }
+                else //next state was not found...
+                {
+                    System.out.println("Next State name provided from DFAState class " +
+                        "\nmethod, However name not found in DFA class list.");
+                    return false; //obviously a problem/discrepancy, no point in continuing string test
+                }
+            }
         }
+
+        
         //Check that the state is a final state at end
         if(currentState.isFinalState)
         {
