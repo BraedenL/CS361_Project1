@@ -151,6 +151,7 @@ public class DFA implements DFAInterface{
          */
         for(int i = 0; i < s.length(); i++)
         {
+            Boolean stateTransitionSuccess = false; //reset it
             nextStateName = null; //reset it
             char letter = s.charAt(i);//Parse through the proposed string
             nextStateName = currentState.findStateOnTransition(letter); //look for it
@@ -164,13 +165,15 @@ public class DFA implements DFAInterface{
                 if(dfaState.getName().equals(nextStateName))
                 {
                     currentState = dfaState; //if next state found, change current to it
+                    stateTransitionSuccess = true;
                 }
-                else //next state was not found...
-                {
-                    System.out.println("Next State name provided from DFAState class " +
-                        "\nmethod, However name not found in DFA class list.");
-                    return false; //obviously a problem/discrepancy, no point in continuing string test
-                }
+            }
+            
+            if(stateTransitionSuccess != true)//next state was not found...
+            {
+                System.out.println("Next State name provided from DFAState class " +
+                    "\nmethod, However name not found in DFA class list.");
+                return false; //obviously a problem/discrepancy, no point in continuing string test
             }
         }
 
