@@ -41,6 +41,7 @@ public class DFAState extends State
     }
     public void addTransition(String nextStateName, Character transitionChar)
     {
+        ArrayList<Character> tempList = new ArrayList<Character>();
         //Check if the transition already exists inside of the state, prevent duplicates from being added to a next state
         for(Character i: transitionList)
         {
@@ -51,8 +52,17 @@ public class DFAState extends State
                 return;
             }
         }
+        tempList.add(transitionChar);
+        nextStateMap.put(nextStateName, tempList);
+        System.out.println(nextStateMap.toString());
+       
+        /*
         transitionList.add(transitionChar);
+        System.out.println(nextStateMap.toString());
         nextStateMap.put(nextStateName, transitionList);
+        System.out.println(nextStateMap.toString());
+        */
+
         //I think this will work, might need to go through list and make ensure the transitionChar isn't 
         //already in the list... --ADDED--
     }

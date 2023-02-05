@@ -277,7 +277,7 @@ public class DFA implements DFAInterface{
         {
             return false;
         }
-
+    
         for (DFAState dfaState : States) 
         {
             if(dfaState.getName().equals(fromState))
