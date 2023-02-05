@@ -98,7 +98,7 @@ public class DFAState extends State
     public String toString()
     {
         //we'll need to figure out the exact formatting for it later.
-        return null;
+        return getName();
         
     }
 

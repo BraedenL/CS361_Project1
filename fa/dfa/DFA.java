@@ -2,6 +2,7 @@ package fa.dfa;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -149,7 +150,7 @@ public class DFA implements DFAInterface{
             }
         }
 
-        
+
         //Check that the state is a final state at end
         if(currentState.isFinalState)
         {
@@ -252,6 +253,46 @@ public class DFA implements DFAInterface{
             }         
         }
         return swappedDFA;
+    }
+
+
+    public String toString()
+    {
+        String retString = null;
+
+        //add states
+        Iterator<DFAState> itrS = States.iterator();
+        retString = retString + "Q = { ";
+        while (itrS.hasNext()) {
+            retString = retString + itrS.next() + " ";
+        }
+        retString = retString + "}\n";
+
+        //add alphabet
+        Iterator<Character> itrA = Sigma.iterator();
+        retString = retString + "Sigma = { ";
+        while (itrA.hasNext()) {
+            retString = retString + itrA.next() + " ";
+        }
+        retString = retString + "}\n";
+
+
+        //add transition table
+        //im a little confused about what the spacing should look like for this...
+
+        //add intial state
+        retString = retString + "q0 = " + startState;
+
+        //add final states
+        Iterator<String> itrF = finalState.iterator();
+        retString = retString + "F = { ";
+        while (itrF.hasNext()) {
+            retString = retString + itrF.next() + " ";
+        }
+        retString = retString + "}\n";
+
+        return retString;
+        
     }
     
 }
