@@ -54,22 +54,45 @@ public class DFA implements DFAInterface{
     @Override
     public boolean setFinal(String name) {
         //We are allowed to have multiple final states, so don't need to check if others are final like the start state function
+        //Apperently we only having one final state with this code
+        for(DFAState dfaState : States)
+        {
+            if(dfaState.isFinalState == true)
+            {
+                return false;
+            }
+        }
         for(DFAState dfaState : States)
         {
             if(dfaState.getName().equals(name))
             {
                 //Searching set, have found the correct state
                 dfaState.toggleFinalState();
-                return true;
             }
         }
         finalState.add(name);
-        return false;
+        return true;
     }
 
     @Override
     public boolean setStart(String name) {
+        //Apperently we dont need to swap which states are starting once one has been initiated
+        for(DFAState dfaState : States)
+        {
+            if(dfaState.checkStartStatus() == true)
+            {
+                return false;
+            }
+        }
+        for(DFAState dfaState : States)
+        {
+            if(dfaState.getName().equals(name))
+            {
+                dfaState.toggleStartState();
+            }
+        }
         //Will need to check through all stored states and remove start so that only one state is the starting state
+        /*
         for(DFAState dfaState : States)
         {
             //Check if any other states are already toggled as a start start
@@ -83,9 +106,10 @@ public class DFA implements DFAInterface{
                 dfaState.toggleStartState();
             }
         }
+        */
         //Update the start state tracker
         startState = name;
-        return false;
+        return true;
     }
 
     @Override
@@ -211,6 +235,46 @@ public class DFA implements DFAInterface{
 
     @Override
     public boolean addTransition(String fromState, String toState, char onSymb) {
+        //Check if fromState exists
+        boolean fromStateExists = false;
+        for(DFAState dfaState : States)
+        {
+            if(dfaState.getName().equals(fromState))
+            {
+                fromStateExists = true;
+            }
+        }
+        if(fromStateExists == false)
+        {
+            return false;
+        }
+        //Check if toState exists
+        boolean toStateExists = false;
+        for(DFAState dfaState : States)
+        {
+            if(dfaState.getName().equals(toState))
+            {
+                toStateExists = true;
+            }
+        }
+        if(toStateExists == false)
+        {
+            return false;
+        }
+        //Check if the onSymb is part of the alphabet
+        boolean onSymbExists = false;
+        for(Character alphabet : Sigma)
+        {
+            if(onSymb == alphabet)
+            {
+                onSymbExists = true;
+            }
+        }
+        if(onSymbExists == false)
+        {
+            return false;
+        }
+
         for (DFAState dfaState : States) 
         {
             if(dfaState.getName().equals(fromState))
