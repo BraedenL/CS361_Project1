@@ -354,7 +354,7 @@ public class DFA implements DFAInterface{
 
         //add states
         Iterator<DFAState> itrS = States.iterator();
-        retString = retString + "Q = { ";
+        retString = "Q = { ";
         while (itrS.hasNext()) {
             retString = retString + itrS.next() + " ";
         }
@@ -370,10 +370,30 @@ public class DFA implements DFAInterface{
 
 
         //add transition table
-        //im a little confused about what the spacing should look like for this...
+        retString = retString + "delta =\n ";
+        //possible transitions
+        Iterator<Character> itrA2 = Sigma.iterator();
+        while (itrA2.hasNext()) {
+            retString = retString + "\t" + itrA2.next();
+        }
+        retString = retString + "\n";
+        //transitions on states
+        Iterator<DFAState> itrS_Col = States.iterator();
+        Iterator<Character> itrA_RowsReference;
+        DFAState currState;
+        while (itrS_Col.hasNext()) {
+            currState = itrS_Col.next();
+            itrA_RowsReference = Sigma.iterator();
+            retString = retString + " " + currState;
+            while (itrA_RowsReference.hasNext()) {
+                retString = retString + "\t" + currState.findStateOnTransition(itrA_RowsReference.next());
+            }
+            retString = retString + "\n";
+        }
 
+        
         //add intial state
-        retString = retString + "q0 = " + startState;
+        retString = retString + "q0 = " + startState + "\n";
 
         //add final states
         Iterator<String> itrF = finalState.iterator();
@@ -381,7 +401,7 @@ public class DFA implements DFAInterface{
         while (itrF.hasNext()) {
             retString = retString + itrF.next() + " ";
         }
-        retString = retString + "}\n";
+        retString = retString + "}";
 
         return retString;
         
