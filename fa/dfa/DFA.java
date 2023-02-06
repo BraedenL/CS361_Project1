@@ -136,7 +136,7 @@ public class DFA implements DFAInterface{
                 currentState = dfaState;
             }
         }
-
+        
         if(currentState == null)
         {
             System.out.println("accepts() failed to find start state");
@@ -292,29 +292,54 @@ public class DFA implements DFAInterface{
     @Override
     public DFA swap(char symb1, char symb2) {
         DFA swappedDFA = new DFA();
-
-        //First add the states from the original to the new dfa
+        String startState = "", finalState = "";
+        if(symb1 == symb2)
+        {
+            return null;
+        }
+        //First add the states from the original to the new dfa, also tracking start and ending for moving over
         for(DFAState dfaState : States)
         {
             swappedDFA.addState(dfaState.getName());
+            if(dfaState.isStartState)
+            {
+                startState = dfaState.getName();
+            }
+            if(dfaState.isFinalState)
+            {
+                finalState = dfaState.getName();
+            }
         }
+        swappedDFA.setStart(startState);
+        swappedDFA.setFinal(finalState);
+        swappedDFA.Sigma = Sigma;
+
         //Go through again, taking the transition. If a transition equals the first symbol, add the second and vise versa
         for(DFAState dfaState : States)
         {
+            //System.out.println(dfaState.transitionList);
+            
             //Move through array of the transitions for a state, or move through the hashmap for next states
             //Moves through hashmap of nextStates
             for(Map.Entry<String, ArrayList<Character>> entry : dfaState.nextStateMap.entrySet())
             {
+                //System.out.println(entry);
                 //Go through transition list
                 for(Character transition : entry.getValue())
                 {
                     if(transition.equals(symb1))
                     {
                         swappedDFA.addTransition(dfaState.getName(), entry.getKey(), symb2);
+                        System.out.println(swappedDFA.States);
                     }
-                    if(transition.equals(symb2))
+                    else if(transition.equals(symb2))
                     {
                         swappedDFA.addTransition(dfaState.getName(), entry.getKey(), symb1);
+                        System.out.println(swappedDFA.States);
+                    }
+                    else
+                    {
+                        swappedDFA.addTransition(dfaState.getName(), entry.getKey(), transition);
                     }
                 }
             }         
