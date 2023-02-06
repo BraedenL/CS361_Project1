@@ -54,7 +54,20 @@ public class DFA implements DFAInterface{
     @Override
     public boolean setFinal(String name) {
         //We are allowed to have multiple final states, so don't need to check if others are final like the start state function
-        //Apperently we only having one final state with this code
+        //Check for existing state with name
+        boolean nameStateExists = false;
+        for(DFAState dfaState : States )
+        {
+            if(dfaState.getName().equals(name))
+            {
+                nameStateExists = true;
+            }
+        }
+        if(nameStateExists == false)
+        {
+            return false;
+        }
+        /*
         for(DFAState dfaState : States)
         {
             if(dfaState.isFinalState == true)
@@ -62,6 +75,7 @@ public class DFA implements DFAInterface{
                 return false;
             }
         }
+        */
         for(DFAState dfaState : States)
         {
             if(dfaState.getName().equals(name))
@@ -76,12 +90,25 @@ public class DFA implements DFAInterface{
 
     @Override
     public boolean setStart(String name) {
-        //Apperently we dont need to swap which states are starting once one has been initiated
+        //Check for existing state with name
+        boolean nameStateExists = false;
+        for(DFAState dfaState : States )
+        {
+            if(dfaState.getName().equals(name))
+            {
+                nameStateExists = true;
+            }
+        }
+        if(nameStateExists == false)
+        {
+            return false;
+        }
+
         for(DFAState dfaState : States)
         {
-            if(dfaState.checkStartStatus() == true)
+            if(dfaState.isStartState == true)
             {
-                return false;
+                dfaState.isStartState = false;
             }
         }
         for(DFAState dfaState : States)
