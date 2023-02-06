@@ -6,7 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import fa.State;
-
+/**
+ * DFAState builds and composes the FA being managed in main programs. It tracks its transitions, the status on start or
+ * final states, and other commands needed to manage states.
+ * @author Braeden LaCombe, Andrew Lackey
+ */
 public class DFAState extends State
 {
     boolean isStartState, isFinalState;
@@ -16,6 +20,10 @@ public class DFAState extends State
     int transitionCharacterCounter = 0;
     ArrayList<Character> transitionList;
 
+    /**
+     * Constructor for DFAStates, in which a name is given to assign for the state.
+     * @param name
+     */
     public DFAState(String name)
     {
         super(name);
@@ -25,20 +33,34 @@ public class DFAState extends State
         nextStateMap = new HashMap<String, ArrayList<Character>>();
         
     }
-    
+    /**
+     * Toggles if the state is a start state, prefer to use toggle in order to have one overall function
+     */
     public void toggleStartState()
     {
         isStartState = !isStartState;
     }
     //For usage when checking all 
+    /**
+     * Return if the state is a starting state, and so strings can begin on this state
+     * @return boolean - start state status
+     */
     public boolean checkStartStatus()
     {
         return isStartState;
     }
+    /**
+     * Toggles if the state should be a final state, allowing strings to end on it
+     */
     public void toggleFinalState()
     {
         isFinalState = !isFinalState;
     }
+    /**
+     * Adds a transition to the HashMap that each state holds, and stores what state name to move to and on what character
+     * @param nextStateName - The next state to move to on transition
+     * @param transitionChar - The character to move to next state on
+     */
     public void addTransition(String nextStateName, Character transitionChar)
     {
         ArrayList<Character> tempList = new ArrayList<Character>();
@@ -67,20 +89,11 @@ public class DFAState extends State
         //already in the list... --ADDED--
     }
 
-    //not sure if its really necessary but we could add a remove transition method? feel free to remove this 
-    //Edited to remove state input in case we need to use it
-    private void removeTransition(Character transitionChar)
-    {
-        for (Character i : transitionList)
-        {
-            if (i.equals(transitionChar))
-            {
-                transitionList.remove(i);
-            }
-        }
-    }
-
-    //returns the next State given a transition char
+    /**
+     * Returns the next State given a transition character
+     * @param transitionChar - The character to search for
+     * @return - The string states to move to
+     */
     public String findStateOnTransition(Character transitionChar)
     {
         String stateName = null;
@@ -105,12 +118,12 @@ public class DFAState extends State
     }
 
     //probably need a toString to use in conjunction with other toStrings for the DFA table at the end
+    /**
+     * Returns the name of the DFAState, from State interface
+     */
     public String toString()
     {
         //we'll need to figure out the exact formatting for it later.
-        return getName();
-        
+        return getName();   
     }
-
-
 }

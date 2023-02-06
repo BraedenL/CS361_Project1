@@ -1,0 +1,39 @@
+# Project 1: Deterministic Finite Automata
+
+* Author: Braeden LaCombe and Andrew Lackey
+* Class: CS361 Section 1
+* Semester: Spring 2022
+
+## Overview
+
+The program builds a finite automata after being given a series of commands. It can manage the individual states and controls a start and final start so that it can track what strings should be accepted into the machine. States and the machine are handled in two seperate classes as to keep trackers differently and the machine is built using the DFAState.java class. 
+## Reflection
+[Braeden LaCombe]
+I feel that overall this project went fairly well. We didn't lack any major holdups and had clear goals in mind. We communicated well and tackled issues as they appeared, as well as completing testing and debugging in a fairly timely manner. I know that I personally had to do some review on HashMaps, and how we can use an ArrayList inside of a HashMap, handling those values and accessing them in other situations.
+If I could go back I would just say not to be to worried and remember to add the simple checks to functions early. For example adding checks to see if a name is valid would have eliminated the need to add them during debugging. We kept clear funtions and variable names and made it easy to track what was being used or managed in a situation.
+[]
+
+
+Write a brief (2-3 paragraph) reflection describing your experience with this 
+project. Answer the following questions (but feel free to add other insights): 
+- What worked well and what was a struggle?
+- What concepts still aren't quite clear?
+- What techniques did you use to make your code easy to debug and modify?
+- What would you change about your design process?
+- If you could go back in time, what would you tell yourself about doing this project?
+
+## Compiling and Using
+
+This section should tell the user how to compile your code.  It is
+also appropriate to instruct the user how to use your code. Does your
+program require user input? If so, what does your user need to know
+about it to use it as quickly as possible?
+
+
+## Sources used
+
+
+----------
+This README template is using Markdown. To preview your README output,
+you can copy your file contents to a Markdown editor/previewer such
+as [https://stackedit.io/editor](https://stackedit.io/editor).

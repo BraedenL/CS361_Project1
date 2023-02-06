@@ -7,7 +7,12 @@ import java.util.Map;
 import java.util.Set;
 
 import fa.State;
-
+/**
+ * The DFA class controls the machine. It uses HashSets to store any of the main information that is typically stored in a set, and
+ * can manage DFAStates in order to create a machine with interconnecting states. It contains a variety of commands to 
+ * manage the machine, using the DFAState commands in conjunction with other controls.
+ * @author Braeden LaCombe, Andrew Lackey
+ */
 public class DFA implements DFAInterface{
 
     /*
@@ -24,16 +29,22 @@ public class DFA implements DFAInterface{
     HashSet<String> finalState;
     //Replace this with transition table variable
 
+    /**
+     * Constructor for the DFA. Initializes variables, and sets empty variables to be managed later on
+     */
     public DFA()
     {
         Sigma = new HashSet<Character>();
         States = new HashSet<DFAState>();
         startState = "";
         finalState = new HashSet<String>(); 
-        //Initialize transition table
     }
 
-
+    /**
+     * Adds a state to the DFA machine. Takes in the name to give to the new state
+     * @param name - name to give new state
+     * @return true if successfull/false if fail
+     */
     @Override
     public boolean addState(String name) {
         
@@ -50,7 +61,11 @@ public class DFA implements DFAInterface{
         States.add(newState);
         return true;
     }
-
+    /**
+     * Sets a state inside of the machine as a final state, and uses the given name to search through the machine states
+     * @param name - state to make final in machine
+     * @return true if successful/false if failed
+     */
     @Override
     public boolean setFinal(String name) {
         //We are allowed to have multiple final states, so don't need to check if others are final like the start state function
@@ -87,7 +102,11 @@ public class DFA implements DFAInterface{
         finalState.add(name);
         return true;
     }
-
+    /**
+     * Sets a state inside of the machine as the start, using a given name to find inside of the state
+     * @param name - state in machine to set as start state
+     * @return true if successful/false if fails
+     */
     @Override
     public boolean setStart(String name) {
         //Check for existing state with name
@@ -138,7 +157,10 @@ public class DFA implements DFAInterface{
         startState = name;
         return true;
     }
-
+    /**
+     * Adds characters to the alphabet for the machine
+     * @param symbol - Character to add to machine alphabet
+     */
     @Override
     public void addSigma(char symbol) {
         for(Character alphabet : Sigma)
@@ -150,7 +172,12 @@ public class DFA implements DFAInterface{
         }
         Sigma.add(symbol);
     }
-
+    /**
+     * Determines if the string given should be accepted by the machine. Moves through the machine one character at a time
+     * and decides if the state is a proper end state
+     * @param s - string to put into FA
+     * @return true if accepted/false if rejected
+     */
     @Override
     public boolean accepts(String s) {
         DFAState currentState = null;
@@ -216,11 +243,19 @@ public class DFA implements DFAInterface{
         }
     }
 
+    /**
+     * Return alphabet/Sigma of the machine
+     * @return the machine alphabet in a set
+     */
     @Override
     public Set<Character> getSigma() {
         return Sigma;
     }
-
+    /**
+     * Returns the state given a name from the machine
+     * @param name - the state name to return
+     * @return a State searched for
+     */
     @Override
     public State getState(String name) {
         for (DFAState dfaState : States) 
@@ -232,7 +267,11 @@ public class DFA implements DFAInterface{
         }
         return null;
     }
-
+    /**
+     * Returns if a state is the final state
+     * @param  name - State to return information from
+     * @return true if successfull/false if failed
+     */
     @Override
     public boolean isFinal(String name) {
         for (DFAState dfaState : States) 
@@ -247,7 +286,11 @@ public class DFA implements DFAInterface{
         }
         return false;
     }
-
+    /**
+     * Return if state is a starting state
+     * @param name - Name of state in FA
+     * @return - true if success/false if failed
+     */
     @Override
     public boolean isStart(String name) {
         for (DFAState dfaState : States) 
@@ -262,7 +305,13 @@ public class DFA implements DFAInterface{
         }
         return false;
     }
-
+    /**
+     * Adds a transition to the state with full information given
+     * @param fromState - The state to add a transition to
+     * @param toState - The state the transition should go to
+     * @param onSymn - Symbol to transition to the next state on
+     * @return true if success/false if fail
+     */
     @Override
     public boolean addTransition(String fromState, String toState, char onSymb) {
         //Check if fromState exists
@@ -315,7 +364,12 @@ public class DFA implements DFAInterface{
         }
         return false;
     }
-
+    /**
+     * Swaps two transition characters without changing states
+     * @param symb1 - The first symbol to swap
+     * @param symb2 - Second symbol to swap with first
+     * @return a new DFA with swapped transitions
+     */
     @Override
     public DFA swap(char symb1, char symb2) {
         DFA swappedDFA = new DFA();
@@ -374,7 +428,10 @@ public class DFA implements DFAInterface{
         return swappedDFA;
     }
 
-
+    /**
+     * Produces a string with all the information about the FA
+     * @return a string with all the information about the FA
+     */
     public String toString()
     {
         String retString = null;
