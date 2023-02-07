@@ -19,6 +19,7 @@ public class DFAState extends State
     HashMap<String, ArrayList<Character>> nextStateMap;
     int transitionCharacterCounter = 0;
     ArrayList<Character> transitionList;
+    int positionAddedInMap;
 
     /**
      * Constructor for DFAStates, in which a name is given to assign for the state.
@@ -31,6 +32,7 @@ public class DFAState extends State
         isFinalState = false;
         transitionList = new ArrayList<Character>();
         nextStateMap = new HashMap<String, ArrayList<Character>>();
+        positionAddedInMap = -1;
         
     }
     /**
@@ -64,6 +66,8 @@ public class DFAState extends State
     public void addTransition(String nextStateName, Character transitionChar)
     {
         ArrayList<Character> tempList = new ArrayList<Character>();
+        ArrayList<Character> tempList_Test = new ArrayList<Character>();
+        Boolean changeOccured = false;
         //Check if the transition already exists inside of the state, prevent duplicates from being added to a next state
         for(Character i: transitionList)
         {
@@ -75,8 +79,31 @@ public class DFAState extends State
             }
         }
         tempList.add(transitionChar);
-        nextStateMap.put(nextStateName, tempList);
-        System.out.println(nextStateMap.toString());
+        if(nextStateMap.containsKey(nextStateName)){//already a transition to a given state
+            // System.out.println("hi number 1");
+            // tempList_Test = nextStateMap.get(nextStateName);
+            tempList_Test.add(transitionChar);
+            if(!tempList_Test.isEmpty())
+            {
+                // System.out.println(tempList + "templist before");
+                // tempList.addAll(tempList_Test);
+                // System.out.println(tempList + "templist after");
+                nextStateMap.merge(nextStateName, tempList_Test, (oldValue, newValue) -> 
+                {
+                    oldValue.addAll(tempList_Test);
+                    return oldValue;
+                }
+                );
+                changeOccured = true;
+            }
+        }
+        
+        if(!changeOccured) 
+        {
+            nextStateMap.put(nextStateName, tempList);
+            System.out.println(nextStateMap.toString());
+        }
+        
        
         /*
         transitionList.add(transitionChar);
@@ -115,6 +142,34 @@ public class DFAState extends State
         }
 
         return stateName;
+    }
+
+    /**
+     * Returns the current assigned position of when it was added to the map
+     * @return
+     */
+    public int addedToMapOrder_getPos() 
+    {
+        return positionAddedInMap;
+    }
+
+
+    /**
+     * Adds a new position if theres not one already
+     * @param - newPos postion to be given to this state
+     * @return - true if newPos was added sucessfully
+     */
+    public boolean addedToMapOrder_replace(int newPos)
+    {
+        if(positionAddedInMap < 0)
+        {
+            positionAddedInMap = newPos;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     //probably need a toString to use in conjunction with other toStrings for the DFA table at the end

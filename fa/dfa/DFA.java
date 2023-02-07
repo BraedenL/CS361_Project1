@@ -27,6 +27,7 @@ public class DFA implements DFAInterface{
     HashSet<DFAState> States;
     String startState;
     HashSet<String> finalState;
+    int stateCounter;
     //Replace this with transition table variable
 
     /**
@@ -38,6 +39,7 @@ public class DFA implements DFAInterface{
         States = new HashSet<DFAState>();
         startState = "";
         finalState = new HashSet<String>(); 
+        stateCounter = 0;
     }
 
     /**
@@ -58,6 +60,8 @@ public class DFA implements DFAInterface{
             }
         }
         DFAState newState = new DFAState(name);
+        stateCounter++;
+        newState.addedToMapOrder_replace(stateCounter);
         States.add(newState);
         return true;
     }
@@ -428,6 +432,36 @@ public class DFA implements DFAInterface{
         return swappedDFA;
     }
 
+
+    // /**
+    //  * Not sure if need this method yet...
+    //  * @param posToLookFor
+    //  * @return
+    //  */
+    // public DFAState addedToMapOrder_hasNext(int posToLookFor) 
+    // {
+    //     return null;
+    // }
+    
+    /**
+     * Looks for the "next" state according to when it was added to the map
+     * @param posToLookFor position added in the map to look for
+     * @return DFAState of state found, or null if noState is found for that position
+     * 
+     * NOTE: the state's "positions" will start at one, not zero 
+     */
+    public DFAState addedToMapOrder_getNext(int posToLookFor) 
+    {
+        for (DFAState dfaState : States) 
+        {
+            if(dfaState.addedToMapOrder_getPos() == posToLookFor)
+            {
+                return dfaState;
+            }
+        }
+        return null;
+    }
+
     /**
      * Produces a string with all the information about the FA
      * @return a string with all the information about the FA
@@ -465,8 +499,9 @@ public class DFA implements DFAInterface{
         Iterator<DFAState> itrS_Col = States.iterator();
         Iterator<Character> itrA_RowsReference;
         DFAState currState;
-        while (itrS_Col.hasNext()) {
-            currState = itrS_Col.next();
+        for (int i = 1; i <= stateCounter; i++) {
+            currState = addedToMapOrder_getNext(i);
+
             itrA_RowsReference = Sigma.iterator();
             retString = retString + " " + currState;
             while (itrA_RowsReference.hasNext()) {
