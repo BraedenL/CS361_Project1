@@ -433,15 +433,22 @@ public class DFA implements DFAInterface{
     }
 
 
-    // /**
-    //  * Not sure if need this method yet...
-    //  * @param posToLookFor
-    //  * @return
-    //  */
-    // public DFAState addedToMapOrder_hasNext(int posToLookFor) 
-    // {
-    //     return null;
-    // }
+    /**
+     * Not sure if need this method yet...
+     * @param posToLookFor
+     * @return
+     */
+    public Boolean addedToMapOrder_hasNext(int posToLookFor) 
+    {
+        for (DFAState dfaState : States) 
+        {
+            if(dfaState.addedToMapOrder_getPos() == posToLookFor)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     
     /**
      * Looks for the "next" state according to when it was added to the map
@@ -472,27 +479,35 @@ public class DFA implements DFAInterface{
 
         //add states
         Iterator<DFAState> itrS = States.iterator();
-        retString = "Q = { ";
+        retString = "Q={"; //
         while (itrS.hasNext()) {
-            retString = retString + itrS.next() + " ";
+            retString = retString + itrS.next();//
+            if(itrS.hasNext())
+            {
+                retString = retString + " ";
+            }
         }
         retString = retString + "}\n";
 
         //add alphabet
         Iterator<Character> itrA = Sigma.iterator();
-        retString = retString + "Sigma = { ";
+        retString = retString + "Sigma = {"; //
         while (itrA.hasNext()) {
-            retString = retString + itrA.next() + " ";
+            retString = retString + itrA.next(); //
+            if(itrA.hasNext())
+            {
+                retString = retString + " ";
+            }
         }
         retString = retString + "}\n";
 
 
         //add transition table
-        retString = retString + "delta =\n ";
+        retString = retString + "delta =\n"; //
         //possible transitions
         Iterator<Character> itrA2 = Sigma.iterator();
         while (itrA2.hasNext()) {
-            retString = retString + "\t" + itrA2.next();
+            retString = retString + " " + itrA2.next(); //\t
         }
         retString = retString + "\n";
         //transitions on states
@@ -503,9 +518,9 @@ public class DFA implements DFAInterface{
             currState = addedToMapOrder_getNext(i);
 
             itrA_RowsReference = Sigma.iterator();
-            retString = retString + " " + currState;
+            retString = retString + "" + currState; //
             while (itrA_RowsReference.hasNext()) {
-                retString = retString + "\t" + currState.findStateOnTransition(itrA_RowsReference.next());
+                retString = retString + " " + currState.findStateOnTransition(itrA_RowsReference.next());  //\t
             }
             retString = retString + "\n";
         }
@@ -516,11 +531,11 @@ public class DFA implements DFAInterface{
 
         //add final states
         Iterator<String> itrF = finalState.iterator();
-        retString = retString + "F = { ";
+        retString = retString + "F={"; //
         while (itrF.hasNext()) {
-            retString = retString + itrF.next() + " ";
+            retString = retString + itrF.next() + ""; //
         }
-        retString = retString + "}";
+        retString = retString + "}\n";
 
         return retString;
         
